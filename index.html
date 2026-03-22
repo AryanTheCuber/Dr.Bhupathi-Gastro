@@ -96,10 +96,40 @@
     .nav-links a:hover { color: var(--gold); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; border: none; background: none; padding: 4px; }
     .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: var(--trans); }
-    .mobile-nav { display: none; position: fixed; inset: 72px 0 0 0; background: var(--blue-deep); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-nav {
+      display: none; position: fixed; inset: 72px 0 0 0;
+      background: var(--blue-deep); z-index: 999;
+      flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+      overflow-y: auto;
+    }
     .mobile-nav.open { display: flex; }
-    .mobile-nav a { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600; color: #fff; transition: color var(--trans); }
-    .mobile-nav a:hover { color: var(--gold); }
+    .mobile-nav a { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 600; color: #fff; transition: color var(--trans); }
+    .mobile-nav a:hover, .mobile-nav a:active { color: var(--gold); }
+    .mobile-nav-divider { width: 40px; height: 1px; background: rgba(255,255,255,0.15); }
+
+    /* Mobile bottom bar — shows only on phones */
+    .mobile-bottom-bar {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 998;
+      background: var(--blue-deep); border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 16px 14px;
+      gap: 8px;
+    }
+    .mobile-bottom-bar a { flex: 1; justify-content: center; font-size: 0.8rem; padding: 10px 8px; }
+    @media (max-width: 767px) {
+      .mobile-bottom-bar { display: flex; }
+      .float-wa { bottom: 80px; }
+      body { padding-bottom: 70px; }
+    }
+    @media (max-width: 479px) {
+      .mobile-nav { inset: 60px 0 0 0; }
+      .mobile-bottom-bar { padding: 8px 12px 12px; }
+      .mobile-bottom-bar a { font-size: 0.74rem; padding: 9px 6px; }
+      .float-wa { bottom: 78px; right: 14px; }
+    }
 
     /* ═══════════════ HERO ═══════════════ */
     #hero {
@@ -462,40 +492,175 @@
     .float-wa-pulse { position: absolute; inset: 0; border-radius: 50%; background: rgba(37,211,102,0.4); animation: wa-pulse 2s ease-out infinite; }
     @keyframes wa-pulse { 0%{transform:scale(1);opacity:1} 70%{transform:scale(1.7);opacity:0} 100%{transform:scale(1.7);opacity:0} }
 
-    /* RESPONSIVE */
-    @media (max-width: 1024px) {
-      .spec-grid { grid-template-columns: repeat(2, 1fr); }
-      .ach-grid { grid-template-columns: repeat(2, 1fr); }
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — Mobile First
+       Breakpoints:
+         xs  < 480px   (small phones)
+         sm  480–767px (large phones)
+         md  768–1023px (tablets)
+         lg  1024px+   (desktop)
+    ═══════════════════════════════════════════ */
+
+    /* ── TABLET (768–1023px) ── */
+    @media (max-width: 1023px) {
+      .container { padding: 0 20px; }
+      .section { padding: 72px 0; }
+
+      /* Hero */
+      .hero-inner { grid-template-columns: 1fr; gap: 0; padding: 60px 0 48px; }
+      .hero-visual { display: none; }
+      .hero-name { font-size: clamp(2rem, 6vw, 3rem); }
+      .hero-stats { gap: 0; flex-wrap: nowrap; }
+      .hero-stat { padding: 0 14px; }
+      .hero-stat-num { font-size: 2rem; }
+
+      /* About */
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-left { max-width: 480px; margin: 0 auto; }
+      .about-float { bottom: -14px; right: -8px; }
+
+      /* Stats */
+      .ach-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
       .ach-divider { display: none; }
+
+      /* Specialties */
+      .spec-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* Procedures */
+      .proc-layout { grid-template-columns: 1fr; gap: 16px; }
+
+      /* News */
       .newspaper-grid { grid-template-columns: repeat(2, 1fr); }
+      .news-featured { grid-template-columns: 1fr; gap: 32px; }
+
+      /* Testimonials */
+      .test-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* Contact */
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+
+      /* Footer */
       .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
     }
-    @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
-      .hero-visual { display: none; }
-      .about-grid { grid-template-columns: 1fr; }
-      .proc-layout { grid-template-columns: 1fr; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .test-grid { grid-template-columns: 1fr; }
-      .news-featured { grid-template-columns: 1fr; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 768px) {
-      .section { padding: 72px 0; }
+
+    /* ── MOBILE LARGE (480–767px) ── */
+    @media (max-width: 767px) {
+      .container { padding: 0 16px; }
+      .section { padding: 56px 0; }
+
+      /* Nav */
       .nav-links { display: none; }
       .nav-cta .btn-outline-blue { display: none; }
       .hamburger { display: flex; }
-      .spec-grid { grid-template-columns: 1fr; }
+      .nav-logo-name { font-size: 1rem; }
+      .nav-logo-title { font-size: 0.55rem; }
+
+      /* Hero */
+      .hero-inner { padding: 48px 0 40px; }
+      .hero-name { font-size: clamp(1.9rem, 7vw, 2.6rem); margin-bottom: 10px; }
+      .hero-degrees { font-size: 0.76rem; }
+      .hero-tagline { font-size: 0.92rem; }
+      .hero-ctas { flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 32px; }
+      .hero-ctas .btn { justify-content: center; width: 100%; }
+      .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid rgba(255,255,255,0.1); }
+      .hero-stat { padding: 16px 12px; border-right: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .hero-stat:nth-child(2n) { border-right: none; }
+      .hero-stat:nth-child(3), .hero-stat:nth-child(4) { border-bottom: none; }
+      .hero-stat-num { font-size: 1.8rem; }
+      .hero-stat-label { font-size: 0.65rem; }
+
+      /* Ticker */
+      .ticker-label { display: none; }
+
+      /* About */
+      .about-card-stats { grid-template-columns: 1fr 1fr; }
+      .about-float { bottom: -10px; right: 0; padding: 10px 14px; }
+      .about-float strong { font-size: 1.2rem; }
+      .section-title { font-size: clamp(1.6rem, 5vw, 2.2rem); }
+      .memberships { gap: 6px; }
+
+      /* Stats */
       .ach-grid { grid-template-columns: 1fr 1fr; }
-      .newspaper-grid { grid-template-columns: 1fr 1fr; }
-      .hero-stats { flex-wrap: wrap; }
+      .ach-num { font-size: 2.4rem; }
+      .ach-item { padding: 28px 16px; }
+
+      /* Specialties */
+      .spec-grid { grid-template-columns: 1fr; }
+      .spec-intro { text-align: left; }
+      .spec-intro .section-sub { margin: 0; }
+
+      /* Procedures */
+      .proc-col { padding: 20px; }
+
+      /* News */
+      .newspaper-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .news-intro { text-align: left; }
+      .news-intro .section-sub { margin: 0; }
+      .news-feat-headline { font-size: 1.3rem; }
+      .news-links-bar { justify-content: flex-start; }
+
+      /* Testimonials */
+      .test-grid { grid-template-columns: 1fr; }
+      .test-intro { text-align: left; }
+      .test-intro .section-sub { margin: 0; }
+
+      /* Contact */
+      .appt-form { padding: 24px 20px; }
       .form-row { grid-template-columns: 1fr; }
-      .footer-top { grid-template-columns: 1fr; }
+      .cta-row { flex-direction: column; }
+      .cta-row .btn { justify-content: center; }
+
+      /* Footer */
+      .footer-top { grid-template-columns: 1fr; gap: 28px; padding-bottom: 32px; }
       .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .footer-brand-desc { max-width: 100%; }
     }
-    @media (max-width: 480px) {
-      .hero-ctas { flex-direction: column; align-items: flex-start; }
+
+    /* ── MOBILE SMALL (< 480px) ── */
+    @media (max-width: 479px) {
+      .container { padding: 0 14px; }
+      .section { padding: 48px 0; }
+
+      /* Nav */
+      .nav-inner { height: 60px; }
+      .mobile-nav { inset: 60px 0 0 0; }
+      .nav-logo-name { font-size: 0.92rem; }
+
+      /* Hero */
+      .hero-inner { padding: 36px 0 32px; }
+      .hero-tag-text { font-size: 0.65rem; letter-spacing: 0.14em; }
+      .hero-name { font-size: clamp(1.7rem, 8vw, 2.2rem); }
+      .hero-role { font-size: 0.76rem; padding: 5px 12px; }
+      .hero-tagline { font-size: 0.88rem; margin-bottom: 24px; }
+      .hero-ctas { gap: 8px; margin-bottom: 28px; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      .hero-stat-num { font-size: 1.5rem; }
+
+      /* About */
+      .about-card-main { padding: 24px 20px; }
+      .about-card-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .about-card-stat-num { font-size: 1.4rem; }
+
+      /* Stats */
+      .ach-num { font-size: 2rem; }
+      .ach-label { font-size: 0.68rem; }
+
+      /* News */
       .newspaper-grid { grid-template-columns: 1fr; }
+      .news-feat-links { gap: 8px; }
+      .news-feat-link { padding: 12px 14px; }
+
+      /* Testimonials */
+      .test-card { padding: 24px 20px; }
+
+      /* Contact */
+      .contact-icon { width: 36px; height: 36px; font-size: 0.9rem; }
+      .appt-form { padding: 20px 16px; }
+      .form-title { font-size: 1.4rem; }
+
+      /* Float WA */
+      .float-wa { width: 50px; height: 50px; bottom: 20px; right: 16px; }
+      .float-wa svg { width: 24px; height: 24px; }
     }
   </style>
 </head>
@@ -530,12 +695,24 @@
 <!-- Mobile Nav -->
 <div class="mobile-nav" id="mobileNav">
   <a href="#about" onclick="closeMobileNav()">About</a>
+  <div class="mobile-nav-divider"></div>
   <a href="#specialties" onclick="closeMobileNav()">Specialities</a>
+  <div class="mobile-nav-divider"></div>
   <a href="#procedures" onclick="closeMobileNav()">Procedures</a>
+  <div class="mobile-nav-divider"></div>
   <a href="#news" onclick="closeMobileNav()">In The News</a>
+  <div class="mobile-nav-divider"></div>
   <a href="#testimonials" onclick="closeMobileNav()">Testimonials</a>
+  <div class="mobile-nav-divider"></div>
   <a href="#contact" onclick="closeMobileNav()">Contact</a>
-  <a href="#contact" class="btn btn-blue" onclick="closeMobileNav()">Book Appointment</a>
+  <a href="#contact" class="btn btn-blue" style="margin-top:8px;" onclick="closeMobileNav()">📅 Book Appointment</a>
+</div>
+
+<!-- Mobile Bottom Bar (phones only) -->
+<div class="mobile-bottom-bar">
+  <a href="tel:+919848540589" class="btn btn-blue">📞 Call</a>
+  <a href="https://wa.me/919848540589?text=Hello%20Dr.%20Prasad%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" class="btn btn-wa">💬 WhatsApp</a>
+  <a href="#contact" class="btn" style="background:var(--gold);color:#fff;flex:1;justify-content:center;font-size:0.8rem;padding:10px 8px;">📅 Appointment</a>
 </div>
 
 <!-- ═══════════════ HERO ═══════════════ -->
@@ -596,7 +773,7 @@
           <div class="hero-main-card">
             <div class="hero-photo-placeholder">👨‍⚕️</div>
             <div class="hero-card-name">Dr. Rajendra Prasad Bhupathi</div>
-            <div class="hero-card-spec">Senior Consultant & Head Surgical Gastroenterologist<br>& Robotic Surgery — CARE Hospitals</div>
+            <div class="hero-card-spec">Senior Consultant Surgical Gastroenterologist<br>& Robotic Surgery — CARE Hospitals</div>
             <div class="hero-card-badges">
               <span class="hero-card-badge">MS</span>
               <span class="hero-card-badge">DNB (Surg. Gastro)</span>
@@ -1149,7 +1326,7 @@
             <div class="contact-icon">🕐</div>
             <div class="contact-text">
               <strong>Consultation Schedule</strong>
-              <p>Monday to Saturday: 10 AM – 3 PM</p>
+              <p>Monday to Saturday: 10 AM – 4 PM</p>
             </div>
           </div>
           <div class="contact-item">
@@ -1297,8 +1474,16 @@
   // Hamburger
   const hamburger = document.getElementById('hamburger');
   const mobileNav = document.getElementById('mobileNav');
-  hamburger.addEventListener('click', () => { mobileNav.classList.toggle('open'); });
-  function closeMobileNav() { mobileNav.classList.remove('open'); }
+  hamburger.addEventListener('click', () => {
+    mobileNav.classList.toggle('open');
+    hamburger.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+  });
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('open');
+    document.body.style.overflow = '';
+  }
 
   // Scroll reveal
   const revealObserver = new IntersectionObserver((entries) => {
